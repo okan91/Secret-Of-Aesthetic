@@ -1,0 +1,84 @@
+let angleOffset = 0; // Initialize the rotation offset
+
+function setup() {
+  createCanvas(800, 600);
+  background(0);
+}
+
+function draw() {
+  background(0); // Clear the background each frame
+  
+  let a = 50; // Length factor for each line segment
+  let lineLength = 2 * a; // Each line length is 2a
+
+  // Add a y-offset to move the pattern downward
+  let yOffset = 150;
+
+  // Original line endpoints, moved down by yOffset
+  let pointB2 = { x: 200, y: 100 + yOffset };
+  let pointJ5 = { x: 200, y: 200 + yOffset };
+
+  // Midpoint of the original line
+  let midpoint = {
+    x: (pointB2.x + pointJ5.x) / 2,
+    y: (pointB2.y + pointJ5.y) / 2
+  };
+
+  // Calculate the rotation center at cot(22.5) * a distance from the midpoint
+  let cot22_5 = 1 / Math.tan(radians(22.5));
+  let rotationDistance = cot22_5 * a;
+
+  // Perpendicular direction vector from midpoint for rotation center
+  let dx = pointJ5.y - pointB2.y;
+  let dy = pointB2.x - pointJ5.x;
+  let magnitude = Math.sqrt(dx * dx + dy * dy);
+  dx /= magnitude;
+  dy /= magnitude;
+
+  let rotationPoint = {
+    x: midpoint.x + rotationDistance * dx,
+    y: midpoint.y + rotationDistance * dy
+  };
+
+  // Draw and rotate the pattern 8 times around rotationPoint
+  for (let i = 0; i < 8; i++) {
+    push();
+    translate(rotationPoint.x, rotationPoint.y);
+    rotate(radians(45 * i + angleOffset)); // Rotate by 45 degrees plus the animation offset
+    translate(-rotationPoint.x, -rotationPoint.y);
+    drawPattern(pointB2, pointJ5);
+    pop();
+  }
+
+  // Update the angleOffset to create rotation animation
+  angleOffset += 1; // Adjust this value to change the speed of rotation
+}
+
+function drawPattern(pointB2, pointJ5) {
+  // Draw the original line between B2 and J5
+  stroke(255);
+  strokeWeight(2);
+  line(pointB2.x, pointB2.y, pointJ5.x, pointJ5.y);
+
+  // Calculate the direction of the line (dx, dy)
+  let dx = pointJ5.x - pointB2.x;
+  let dy = pointJ5.y - pointB2.y;
+
+  // Compute the 120-degree rotated points
+  let angle1 = radians(120);
+  let endPoint1 = {
+    x: pointJ5.x + cos(angle1) * dx - sin(angle1) * dy,
+    y: pointJ5.y + sin(angle1) * dx - cos(angle1) * dy
+  };
+
+  let angle2 = radians(-135);
+  let endPoint2 = {
+    x: pointJ5.x - cos(angle2) * dx - sin(angle2) * dy,
+    y: pointJ5.y - sin(angle2) * dx - cos(angle2) * dy
+  };
+
+  // Draw the two 120-degree lines
+  line(pointJ5.x, pointJ5.y, endPoint1.x, endPoint1.y);
+  line(pointJ5.x, pointJ5.y, endPoint2.x, endPoint2.y);
+}
+
