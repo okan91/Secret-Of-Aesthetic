@@ -1,0 +1,65 @@
+let a = 30;
+
+function setup() {
+  createCanvas(400, 400);
+  angleMode(DEGREES);
+  noStroke();
+}
+
+function draw() {
+  background(15, 15, 35); // dark night blue
+
+  drawMoon();
+  drawStars();
+
+  let x0, y0, x1, y1, x2, y2, x3, y3;
+
+  push();
+  for (let i = 0; i < 6; i++) {
+    push();
+    translate(width * 0.5, height * 0.5);
+    rotate(i * 60); // rotate the motif
+    translate(cos(30) * a * 2, 0); // radial distance
+    stroke(255);
+    noFill();
+
+    beginShape();
+    x0 = a * cos(30);
+    y0 = a * sin(30);
+    vertex(x0, y0);
+    x1 = -x0;
+    y1 = -y0;
+    vertex(x1, y1);
+    endShape();
+
+    beginShape();
+    x2 = x0;
+    y2 = y1;
+    vertex(x2, y2);
+    x3 = x1;
+    y3 = y0;
+    vertex(x3, y3);
+    endShape();
+    pop();
+  }
+  pop();
+}
+
+// 🌕 Draw glowing moon
+function drawMoon() {
+  push();
+  translate(60, 80);
+  fill(255, 300, 200, 100); // soft glow
+  ellipse(15, 0, 100, 100);
+  fill(255, 255, 220); // bright center
+  ellipse(0, 0, 60, 60);
+  pop();
+}
+
+// ✨ Random stars
+function drawStars() {
+  for (let i = 0; i < 100; i++) {
+    fill(255, random(100, 255));
+    ellipse(random(width), random(height), random(1, 2));
+  }
+}
