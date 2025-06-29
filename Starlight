@@ -45,7 +45,7 @@ function draw() {
   pop();
 }
 
-// 🌕 Draw glowing moon
+//  Draw glowing moon
 function drawMoon() {
   push();
   translate(60, 80);
@@ -56,7 +56,7 @@ function drawMoon() {
   pop();
 }
 
-// ✨ Random stars
+//  Random stars
 function drawStars() {
   for (let i = 0; i < 100; i++) {
     fill(255, random(100, 255));
